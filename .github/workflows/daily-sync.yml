@@ -1,0 +1,19 @@
+name: Daily Sync Trigger
+
+on:
+  schedule:
+    - cron: '0 2 * * *'   # 02:00 UTC every day — adjust as needed
+  workflow_dispatch:       # run manually from the Actions tab
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call trigger-sync endpoint
+        run: |
+          curl -sS -X POST "${{ secrets.BACKEND_URL }}/api/trigger-sync" \
+            -H "Content-Type: application/json" \
+            -H "x-trigger-token: ${{ secrets.TRIGGER_TOKEN }}" \
+            -d '{"source":"scheduled"}' \
+            -w "\nHTTP %{http_code}\n" \
+            --fail-with-body

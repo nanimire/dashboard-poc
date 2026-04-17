@@ -1,0 +1,18 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '--build-arg=VITE_TRIGGER_TOKEN=${_TRIGGER_TOKEN}'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/dashboard-images/app:${_IMAGE_TAG}'
+      - '.'
+
+images:
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/dashboard-images/app:${_IMAGE_TAG}'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+substitutions:
+  _IMAGE_TAG: latest
+  _TRIGGER_TOKEN: ''
